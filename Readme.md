@@ -20,7 +20,3 @@ The primary purpose of this portfolio is to provide recruiters, collaborators, a
 
 This portfolio is under active development and will be continuously updated as new projects are completed and existing ones are refined.
 
----
-
-This project reflects my ongoing growth as a software developer and will evolve alongside my skills and experienc.
-
