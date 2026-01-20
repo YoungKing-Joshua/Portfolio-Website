@@ -1,19 +1,30 @@
+"use client";
+
 import { assets } from "@/assets/assets";
 import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
 
 const Navbar = () => {
+  const sideMenuRef = useRef();
+
+  const openMenu = () => {
+    sideMenuRef.current.style.transform = "translateX(-16rem)";
+  };
+
+  const closeMenu = () => {
+    sideMenuRef.current.style.transform = "translateX(16rem)";
+  };
   return (
     <>
       <div className="fixed top-0 left-0 w-11/12 -z-10 translate-y-[-80%]">
         <Image src={assets.header_bg_color} alt="" className="w-full" />
       </div>
-      <nav className="w-full fixed px5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50">
+      <nav className="w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50">
         <a href="#top" className="font-Ovo">
           <Image
             alt=""
             src={assets.logo}
-            className="w-28 cursor pointer mr-14"
+            className="w-28 cursor-pointer mr-14"
           />
         </a>
 
@@ -55,12 +66,51 @@ const Navbar = () => {
             <Image alt="" src={assets.arrow_icon} className="w-3" />
           </a>
 
-          <button className="block md:hidden ml-3">
+          <button className="block md:hidden ml-3" onClick={openMenu}>
             <Image alt="" src={assets.menu_black} className="w-6 " />
           </button>
         </div>
 
         {/* -- ----- moble menu ----- -- */}
+
+        <ul
+          ref={sideMenuRef}
+          className="flex md:hidden flex-col gap-4 py-20  px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen bg-rose-50 transition duration-500"
+        >
+          <div className="absolute top-6 right-6" onClick={closeMenu}>
+            <Image
+              alt=""
+              src={assets.close_black}
+              className="w-5 cursor-pointer"
+            />
+          </div>
+
+          <li>
+            <a href="#top" className="font-Ovo" onClick={closeMenu}>
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="#about" className="font-Ovo" onClick={closeMenu}>
+              About Me
+            </a>
+          </li>
+          <li>
+            <a href="#service" className="font-Ovo" onClick={closeMenu}>
+              Services
+            </a>
+          </li>
+          <li>
+            <a href="#work" className="font-Ovo" onClick={closeMenu}>
+              My Work
+            </a>
+          </li>
+          <li>
+            <a href="#contact" onClick={closeMenu}>
+              Contact Me
+            </a>
+          </li>
+        </ul>
       </nav>
     </>
   );
