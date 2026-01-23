@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { assets, infoList } from "@/assets/assets";
+import { assets, infoList } from "@/public/assets/assets";
 
 const About = () => {
   return (
