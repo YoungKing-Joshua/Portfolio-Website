@@ -8,7 +8,7 @@ const Navbar = () => {
   const sideMenuRef = useRef();
 
   const openMenu = () => {
-    sideMenuRef.current.style.transform = "translateX(-16rem)";
+    sideMenuRef.current.style.transform = "translateX(0rem)";
   };
 
   const closeMenu = () => {
