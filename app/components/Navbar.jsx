@@ -2,7 +2,7 @@
 
 import { assets } from "@/public/assets/assets";
 import Image from "next/image";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,7 +18,7 @@ const Navbar = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      if (scroll > 50) {
+      if (scrollY > 50) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -31,8 +31,9 @@ const Navbar = () => {
         <Image src={assets.header_bg_color} alt="" className="w-full" />
       </div>
       <nav
-        className="w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex 
-      items-center justify-between z-50"
+        className={`w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 ${
+          isScrolled ? "bg-white bg-opacity-50 backdrop-blur-lg shadow-sm" : ""
+        }`}
       >
         <a href="#top" className="font-Ovo">
           <Image
