@@ -1,5 +1,3 @@
-"use client";
-
 import { assets } from "@/public/assets/assets";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
