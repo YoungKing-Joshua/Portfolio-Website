@@ -25,13 +25,14 @@ const Navbar = () => {
   }, []);
   return (
     <>
-      <div className="fixed top-0 left-0 w-11/12 -z-10 translate-y-[-80%]">
+      <div className="fixed top-0 right-0 w-11/12 -z-10 translate-y-[-80%]">
         <Image src={assets.header_bg_color} alt="" className="w-full" />
       </div>
       <nav
-        className={`w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 ${
-          isScrolled ? "bg-white bg-opacity-50 backdrop-blur-lg shadow-sm" : ""
-        }`}
+        className={`w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex 
+          items-center justify-between z-50 ${
+            isScrolled ? "bg-white/30 backdrop-blur-lg shadow-sm" : ""
+          }`}
       >
         <a href="#top" className="font-Ovo">
           <Image
@@ -42,8 +43,10 @@ const Navbar = () => {
         </a>
 
         <ul
-          className="hidden md:flex items-center gap-6 lg:gap-8 
-        rounded-full px-12 py-3 bg-white shadow-sm bg-opacity-50"
+          className={`hidden md:flex items-center gap-6 lg:gap-8 
+            rounded-full px-12 py-3 ${
+              isScrolled ? "" : "bg-white shadow-sm bg-opacity-50"
+            } bg-white/50 shadow-sm`}
         >
           <li>
             <a href="#top" className="font-Ovo">

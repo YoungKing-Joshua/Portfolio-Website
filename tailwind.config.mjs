@@ -1,6 +1,6 @@
 import { Outfit, Ovo } from "next/font/google";
 
-/** @type {import('tailwindcss').Config} */
+/** @type {import ('tailwindcss').Config} */
 export default {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -19,9 +19,9 @@ export default {
         Ovo: ["Ovo", "serif"],
       },
       boxShadow: {
-        black: "4px 4px 0 #000",
-        white: "4px 4px 0 #fff",
-      },
+        'black':' 4px 4px 0 #000',
+        'white':' 4px 4px 0 #fff',
+      }
     },
   },
   plugins: [],
