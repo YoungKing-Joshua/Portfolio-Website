@@ -1,3 +1,5 @@
+import { assets } from "@/public/assets/assets";
+import Image from "next/image";
 import React from "react";
 
 function Contact() {
@@ -39,7 +41,14 @@ function Contact() {
           className="w-full p-4 outline-none border-[0.5px] boder-gray-400
         rounded-md bg-white mb-6"
         ></textarea>
-        <button type="submit">Submit Now</button>
+        <button
+          type="submit"
+          className="py-3 px-8 w-max flex items-center justify-between gap-2 bg-black/80
+         text-white rounded-full mx-auto hover:bg-black duration-500"
+        >
+          Submit Now
+          <Image src={assets.right_arrow_white} alt="" className="W-4" />
+        </button>
       </form>
     </div>
   );
