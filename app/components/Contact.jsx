@@ -14,6 +14,33 @@ function Contact() {
         I'd love to hear from you! If you have any questions, comments, or
         feedback, please use the form below.
       </p>
+
+      <form className="max-w-2xl mx-auto">
+        <div className="grid grid-cols-auto gap-6 mt-10 mb-8">
+          <input
+            type="text"
+            placeholder="Enter your name"
+            required
+            className="flex-1 p-3 outline-none border-[0.5px] border-gray-400
+          rounded-md bg-white"
+          />
+          <input
+            type="email"
+            placeholder="Enter your email"
+            required
+            className="w-full p-4 outline-none border-[0.5px] border-gray-400 
+          rounded-md bg-white"
+          />
+        </div>
+        <textarea
+          rows="6"
+          placeholder="Enter your message"
+          required
+          className="w-full p-4 outline-none border-[0.5px] boder-gray-400
+        rounded-md bg-white mb-6"
+        ></textarea>
+        <button type="submit">Submit Now</button>
+      </form>
     </div>
   );
 }
