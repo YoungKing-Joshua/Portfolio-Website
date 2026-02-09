@@ -5,6 +5,7 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -25,5 +26,6 @@ export default {
       },
     },
   },
+  darkMode: "selector",
   plugins: [],
 };

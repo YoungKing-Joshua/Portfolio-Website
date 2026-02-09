@@ -1,6 +1,8 @@
+"use client";
+
 import { assets } from "@/public/assets/assets";
 import Image from "next/image";
-import React from "react";
+import React, { use } from "react";
 import { useState } from "react";
 
 function Contact() {
@@ -9,7 +11,7 @@ function Contact() {
   const onSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    formData.append("access_key", "262c6822-2ed8-4726-a7eb-65d23541a7e0");
+    formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY);
 
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
@@ -17,7 +19,7 @@ function Contact() {
     });
 
     const data = await response.json();
-    setResult(data.success ? "Success!" : "Error");
+    setResult(data.success ? "Message has been sent.." : "Error");
   };
   return (
     <div
