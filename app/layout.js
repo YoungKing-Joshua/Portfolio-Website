@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
          dark:text-white`}
       >
         {children}
-      </body>
+      </body> 
     </html>
   );
 }
