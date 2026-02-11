@@ -12,12 +12,12 @@ import Work from "./components/Work";
 export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(true);
 
-  // Added fallback and improved dark mode initialization logic
   useEffect(() => {
-    const theme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    if (theme === "dark" || (!theme && prefersDark)) {
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
       setIsDarkMode(true);
     } else {
       setIsDarkMode(false);
@@ -27,10 +27,10 @@ export default function Home() {
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
+      localStorage.theme = "dark";
     } else {
       document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
+      localStorage.theme = "";
     }
   }, [isDarkMode]);
 

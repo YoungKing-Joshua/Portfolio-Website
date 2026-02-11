@@ -50,7 +50,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
               isScrolled
                 ? ""
                 : "bg-white shadow-sm bg-opacity-50 dark:border dark:border-white/50 dark:bg-transparent"
-            } bg-white/50 shadow-sm`}
+            }`}
         >
           <li>
             <a href="#top" className="font-Ovo">
@@ -112,12 +112,12 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
 
         <ul
           ref={sideMenuRef}
-          className="flex md:hidden flex-col gap-4 py-20  px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen bg-rose-50 transition duration-500"
+          className="flex md:hidden flex-col gap-4 py-20  px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen bg-rose-50 transition duration-500 dark:bg-darkHover dark:text-white"
         >
           <div className="absolute top-6 right-6" onClick={closeMenu}>
             <Image
               alt=""
-              src={assets.close_black}
+              src={isDarkMode ? assets.close_white : assets.close_black}
               className="w-5 cursor-pointer"
             />
           </div>
