@@ -1,22 +1,56 @@
 import { assets, workData } from "@/public/assets/assets";
 import Image from "next/image";
 import React from "react";
+import { motion, scale } from "motion/react";
+import { delay } from "motion";
 
 export default function Work({ DarkMode }) {
   return (
-    <div id="work" className="w-full px-[12%] py-10 scroll-mt-20">
-      <h4 className="text-center mb-2 text-lg font-Ovo">My Portfolio</h4>
-      <h2 className="text-center text-5xl font-Ovo">My Latest Work</h2>
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      id="work"
+      className="w-full px-[12%] py-10 scroll-mt-20"
+    >
+      <h4
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="text-center mb-2 text-lg font-Ovo"
+      >
+        My Portfolio
+      </h4>
+      <h2
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="text-center text-5xl font-Ovo"
+      >
+        My Latest Work
+      </h2>
 
-      <p className="text-center max-w-2xl mx-auto mt-5 mb-12 font-Ovo">
+      <p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.7, duration: 0.5 }}
+        className="text-center max-w-2xl mx-auto mt-5 mb-12 font-Ovo"
+      >
         Welcome to my porfolio! Explore a selection of my recent projects that
         showcase my skills and expertise in software development. Each project
         reflects my commitment to delivering high-quality solutions and
         innovative designs.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-10 gap-5 dark:text-black">
+      <div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.9, duration: 0.6 }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-10 gap-5 dark:text-black"
+      >
         {workData.map((project, index) => (
           <div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
             key={index}
             className="aspect-square bg-no-repeat bg-cover bg-center rounded-lg
             relative cursor-pointer group"
@@ -44,6 +78,9 @@ export default function Work({ DarkMode }) {
       </div>
 
       <a
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 1.1, duration: 0.5 }}
         href=""
         className="w-max flex items-center justify-center gap-2
       text-gray-700 border-[0.5px] border-gray-700 rounded-full py-3 px-10 mx-auto 
@@ -58,6 +95,6 @@ export default function Work({ DarkMode }) {
           className="w-4"
         />
       </a>
-    </div>
+    </motion.div>
   );
 }
