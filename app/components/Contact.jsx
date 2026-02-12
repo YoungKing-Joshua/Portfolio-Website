@@ -5,7 +5,7 @@ import Image from "next/image";
 import React, { use } from "react";
 import { useState } from "react";
 
-function Contact({ isDarkMode }) {
+function Contact() {
   const [result, setResult] = useState("");
 
   const onSubmit = async (event) => {
