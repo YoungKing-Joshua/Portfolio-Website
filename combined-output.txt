@@ -1,0 +1,880 @@
+./tailwind.config.mjs
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
+  ],
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        lightHover: "#fcf4ff",
+        darkHover: "#2a004a",
+        darkTheme: "#11001F",
+      },
+      fontFamily: {
+        Outfit: ["Outfit", "sans-serif"],
+        Ovo: ["Ovo", "serif"],
+      },
+      boxShadow: {
+        black: "4px 4px 0 #000",
+        white: "4px 4px 0 #fff",
+      },
+      gridTemplateColumns: {
+        auto: "repeat(auto-fit, minmax(200px, 1fr))",
+      },
+    },
+  },
+  darkMode: "selector",
+  plugins: [],
+};
+
+
+
+./app/layout.js
+import { Outfit, Ovo } from "next/font/google";
+import "./globals.css";
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const ovo = Ovo({
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
+export const metadata = {
+  title: "Porfolio Website",
+  description: "A personal portfolio website built with Next.js",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className="scroll-smooth dark">
+      <body
+        className={`${outfit.className} ${ovo.className}
+         antialiased leading-8 overflow-x-hidden dark:bg-darkTheme
+         dark:text-white`}
+      >
+        {children}
+      </body> 
+    </html>
+  );
+}
+
+
+
+./app/page.js
+"use client";
+
+import { useEffect, useState } from "react";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import Navbar from "./components/Navbar";
+import Services from "./components/Services";
+import Work from "./components/Work";
+
+export default function Home() {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  useEffect(() => {
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      setIsDarkMode(true);
+    } else {
+      setIsDarkMode(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.theme = "dark";
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.theme = "";
+    }
+  }, [isDarkMode]);
+
+  return (
+    <>
+      <Navbar isDarkMode={isDarkMode} />
+      <Header isDarkMode={isDarkMode} />
+      <About isDarkMode={isDarkMode} />
+      <Services isDarkMode={isDarkMode} />
+      <Work isDarkMode={isDarkMode} />
+      <Contact isDarkMode={isDarkMode} />
+      <Footer isDarkMode={isDarkMode} />
+    </>
+  );
+}
+
+
+
+./app/globals.css
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+./app/components/About.jsx
+"use client";
+
+import React from "react";
+import Image from "next/image";
+import { assets, infoList, toolsData } from "@/public/assets/assets";
+import { motion } from "motion/react";
+
+const About = ({ isDarkMode }) => {
+  return (
+    <motion.div
+      className="w-full px-[12%] py-10 scroll-mt-20"
+      id="about"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      <motion.h4
+        id="about"
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.3 }}
+        className="text-center mb-2 text-lg font-Ovo"
+      >
+        Introduction
+      </motion.h4>
+      <motion.h2
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="text-center text-5xl font-Ovo"
+      >
+        About Me
+      </motion.h2>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="flex w-full flex-col lg:flex-row items-center gap-20 my-20"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="w-64 sm:w-80 rounded-3xl max-w-none"
+        >
+          <Image
+            src={assets.user_image}
+            alt="user"
+            width={320}
+            height={320}
+            className="w-full rounded-3xl"
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="flex-1"
+        >
+          <p className="mb-10 max-w-2xl font-Ovo">
+            I am a dedicated software developer based in Ghana. With a passion
+            for technology and innovation, I specialize in creating dynamic and
+            responsive web applications that deliver.
+          </p>
+
+          <motion.ul
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1 }}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl"
+          >
+            {infoList.map(({ icon, iconDark, title, description }, index) => (
+              <motion.li
+                whileInView={{ scale: 1.05 }}
+                key={index}
+                className="border-[0.5px] border-gray-400 rounded-xl p-6 cursor-pointer hover:bg-lightHover hover:-translate-y-1 duration-500 hover:shadow-black dark:border-white dark:hover:shadow-white dark:hover:bg-darkHover/50"
+              >
+                <Image
+                  src={isDarkMode ? iconDark : icon}
+                  alt={title}
+                  className="m-7 mt-3"
+                />
+                <h3 className="my-4 font-semibold text-gray-700 dark:text-white">
+                  {title}
+                </h3>
+                <p className="text-gray-600 text-sm dark:text-white/80">
+                  {description}
+                </p>
+              </motion.li>
+            ))}
+          </motion.ul>
+          <motion.h4
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 1.3, duration: 0.5 }}
+            className="my-6 text-gray-700 font-Ovo dark:text-white/80"
+          >
+            Tools I use
+          </motion.h4>
+
+          <motion.ul
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 0.6 }}
+            className="flex items-center gap-3 sm:gap-5"
+          >
+            {toolsData.map((tool, index) => (
+              <motion.li
+                whileHover={{ opacity: 1.1 }}
+                className="flex items-center justify-center w-12 sm:w-14 aspect-square border border-gray-400 rounded-lg cursor-pointer hover:-translate-y-1 duration-500"
+                key={index}
+              >
+                <Image src={tool} alt="Tool" className="w-5 sm:w-7" />
+              </motion.li>
+            ))}
+          </motion.ul>
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+export default About;
+
+
+
+./app/components/Contact.jsx
+"use client";
+
+import { assets } from "@/public/assets/assets";
+import Image from "next/image";
+import React, { use } from "react";
+import { useState } from "react";
+import { motion } from "motion/react";
+
+function Contact() {
+  const [result, setResult] = useState("");
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY);
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+    setResult(data.success ? "Message has been sent.." : "Error");
+  };
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      id="contact"
+      className='w-full px-[12%] py-10 scroll-mt-20 bg-[url("/footer-bg-color.png")] bg-no-repeat bg-center bg-[length:90%_auto] dark:bg-none'
+    >
+      <motion.h4
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        className="text-center mb-2 text-lg font-Ovo"
+      >
+        Connect with me
+      </motion.h4>
+      <motion.h2
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        className="text-center text-5xl font-Ovo"
+      >
+        Get in touch
+      </motion.h2>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.7, duration: 0.5 }}
+        className="text-center max-w-2xl mx-auto mt-5 mb-12 font-Ovo"
+      >
+        I'd love to hear from you! If you have any questions, comments, or
+        feedback, please use the form below.
+      </motion.p>
+
+      <motion.form
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.9, duration: 0.5 }}
+        onSubmit={onSubmit}
+        className="max-w-2xl mx-auto"
+      >
+        <div className="grid grid-cols-auto gap-6 mt-10 mb-8">
+          <motion.input
+            initial={{ x: -50, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ delay: 1.1, duration: 0.6 }}
+            type="text"
+            placeholder="Enter your name"
+            required
+            className="flex-1 p-3 outline-none border-[0.5px] border-gray-400
+          rounded-md bg-white dark:bg-darkHover/30 dark:border-white/90"
+            name="name"
+          />
+          <motion.input
+            initial={{ x: 50, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ delay: 1.1, duration: 0.6 }}
+            type="email"
+            placeholder="Enter your email"
+            required
+            className="w-full p-4 outline-none border-[0.5px] border-gray-400 
+          rounded-md bg-white dark:bg-darkHover/30 dark:border-white/90"
+            name="email"
+          />
+        </div>
+        <motion.textarea
+          initial={{ x: 100, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ delay: 1.3, duration: 0.6 }}
+          rows="6"
+          placeholder="Enter your message"
+          required
+          className="w-full p-4 outline-none border-[0.5px] boder-gray-400
+        rounded-md bg-white mb-6 dark:bg-darkHover/30 dark:border-white/90"
+          name="message"
+        ></motion.textarea>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
+          type="submit"
+          className="py-3 px-8 w-max flex items-center justify-between gap-2 bg-black/80
+         text-white rounded-full mx-auto hover:bg-black duration-500 dark:bg-transparent dark:border-[0.5px] dark:hover:bg-darkHover"
+        >
+          Submit Now
+          <Image src={assets.right_arrow_white} alt="" className="W-4" />
+        </motion.button>
+        <p className="mt-4">{result}</p>
+      </motion.form>
+    </motion.div>
+  );
+}
+
+export default Contact;
+
+
+
+./app/components/Footer.jsx
+import { assets } from "@/public/assets/assets";
+import Image from "next/image";
+import React from "react";
+
+function Footer({ isDarkMode }) {
+  return (
+    <div className="mt-20">
+      <div className="text-center">
+        <Image
+          src={isDarkMode ? assets.logo_dark : assets.logo}
+          alt=""
+          className="w-36 mx-auto mb-2"
+        />
+
+        <div className="w-max flex items-center gap-2 mx-auto">
+          <Image
+            src={isDarkMode ? assets.mail_icon_dark : assets.mail_icon}
+            alt=""
+            className="w-6"
+          />
+          joshuadeialorse@gmail.com
+        </div>
+      </div>
+      <div
+        className="text-center sm:flex items-center justify-between border-t 
+      border-gray-400 mx-[10%] mt-12 py-6"
+      >
+        <p>© 2026 Joshua Dei-Alorse. All rights reserved.</p>
+        <ul className="flex items-center gap-10 justify-center">
+          <li>
+            <a target="_blank" href="https://github.com/YoungKing-Joshua">
+              Github
+            </a>
+          </li>
+          <li>
+            <a
+              target="_blank"
+              href="https://www.linkedin.com/in/joshua-dei-alorse-ba9157236/"
+            >
+              LinkedIn
+            </a>
+          </li>
+          <li>
+            <a target="_blank" href="https://github.com/YoungKing-Joshua">
+              Twitter
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default Footer;
+
+
+
+./app/components/Header.jsx
+import React from "react";
+import Image from "next/image";
+import { assets } from "@/public/assets/assets";
+import { motion } from "motion/react";
+
+const Header = () => {
+  return (
+    <div className="w-11/12 max-w-3xl text-center mx-auto h-screen flex flex-col items-center justify-center gap-4">
+      <motion.div
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
+      >
+        <Image src={assets.profile_img} alt="" className="rounded-full w-32" />
+      </motion.div>
+      <motion.h3
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="flex items-end justify-center gap-2 text-xl md:text-2xl mb-3 font-Ovo"
+      >
+        Hello, I'm Joshua Dei-Alorse
+        <Image src={assets.hand_icon} alt="" className="w-6" />
+      </motion.h3>
+
+      <motion.h1
+        initial={{ y: -30, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        className="text-3xl sm:text-6xl lg:text-[66px] font-Ovo"
+      >
+        Software Developer in Ghana
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.7 }}
+        className="max-w-2xl mx-auto font-Ovo"
+      >
+        I am a passionate software developer specializing in building
+        exceptional digital experiences. Currently, I focus on creating
+        responsive web applications.
+      </motion.p>
+
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
+        <motion.a
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          href="#contact"
+          className="px-10 py-3 border border-white rounded-full bg-black text-white flex items-center gap-2 dark:bg-transparent"
+        >
+          Contact me
+          <Image src={assets.right_arrow_white} alt="" className="w-4" />
+        </motion.a>
+
+        <motion.a
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 1.2 }}
+          href="/sample-resume.pdf"
+          download
+          className="px-10 py-3 border border-gray-500 rounded-full flex items-center gap-2 bg-white dark:text-black"
+        >
+          My resume
+          <Image src={assets.download_icon} alt="" className="w-4" />
+        </motion.a>
+      </div>
+    </div>
+  );
+};
+
+export default Header;
+
+
+
+./app/components/Navbar.jsx
+import { assets } from "@/public/assets/assets";
+import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
+
+const Navbar = ({ isDarkMode, setIsDarkMode }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const sideMenuRef = useRef();
+
+  const openMenu = () => {
+    sideMenuRef.current.style.transform = "translateX(-16rem)";
+  };
+
+  const closeMenu = () => {
+    sideMenuRef.current.style.transform = "translateX(16rem)";
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    });
+  }, []);
+  return (
+    <>
+      <div className="fixed top-0 right-0 w-11/12 -z-10 translate-y-[-80%] dark:hidden">
+        <Image src={assets.header_bg_color} alt="" className="w-full" />
+      </div>
+      <nav
+        className={`w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex 
+          items-center justify-between z-50 ${
+            isScrolled
+              ? "bg-white bg-opacity-50 backdrop-blur-lg shadow-sm dark:bg-darkTheme dark:shadow-white/20"
+              : ""
+          }`}
+      >
+        <a href="#top" className="font-Ovo">
+          <Image
+            alt=""
+            src={isDarkMode ? assets.logo_dark : assets.logo}
+            className="w-28 alt='' cursor-pointer mr-14"
+          />
+        </a>
+
+        <ul
+          className={`hidden md:flex items-center gap-6 lg:gap-8 
+            rounded-full px-12 py-3 ${
+              isScrolled
+                ? ""
+                : "bg-white shadow-sm bg-opacity-50 dark:border dark:border-white/50 dark:bg-transparent"
+            }`}
+        >
+          <li>
+            <a href="#top" className="font-Ovo">
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="#about" className="font-Ovo">
+              About Me
+            </a>
+          </li>
+          <li>
+            <a href="#service" className="font-Ovo">
+              Services
+            </a>
+          </li>
+          <li>
+            <a href="#work" className="font-Ovo">
+              My Work
+            </a>
+          </li>
+          <li>
+            <a href="#contact" className="font-Ovo">
+              Contact Me
+            </a>
+          </li>
+        </ul>
+
+        <div className="flex items-center gap-4">
+          <button onClick={() => setIsDarkMode((prev) => !prev)}>
+            <Image
+              alt=""
+              src={isDarkMode ? assets.sun_icon : assets.moon_icon}
+              className="w-6 "
+            />
+          </button>
+          <a
+            href="#contact"
+            className="hidden lg:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 font-Ovo dark:border-white/50"
+          >
+            Contact
+            <Image
+              alt=""
+              src={isDarkMode ? assets.arrow_icon_dark : assets.arrow_icon}
+              className="w-3"
+            />
+          </a>
+
+          <button className="block md:hidden ml-3" onClick={openMenu}>
+            <Image
+              alt=""
+              src={isDarkMode ? assets.menu_white : assets.menu_black}
+              className="w-6 "
+            />
+          </button>
+        </div>
+
+        {/* -- ----- moble menu ----- -- */}
+
+        <ul
+          ref={sideMenuRef}
+          className="flex md:hidden flex-col gap-4 py-20  px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen bg-rose-50 transition duration-500 dark:bg-darkHover dark:text-white"
+        >
+          <div className="absolute top-6 right-6" onClick={closeMenu}>
+            <Image
+              alt=""
+              src={isDarkMode ? assets.close_white : assets.close_black}
+              className="w-5 cursor-pointer"
+            />
+          </div>
+
+          <li>
+            <a href="#top" className="font-Ovo" onClick={closeMenu}>
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="#about" className="font-Ovo" onClick={closeMenu}>
+              About Me
+            </a>
+          </li>
+          <li>
+            <a href="#service" className="font-Ovo" onClick={closeMenu}>
+              Services
+            </a>
+          </li>
+          <li>
+            <a href="#work" className="font-Ovo" onClick={closeMenu}>
+              My Work
+            </a>
+          </li>
+          <li>
+            <a href="#contact" onClick={closeMenu}>
+              Contact Me
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </>
+  );
+};
+
+export default Navbar;
+
+
+
+./app/components/Services.jsx
+import { assets, serviceData } from "@/public/assets/assets";
+import Image from "next/image";
+import React from "react";
+import { motion } from "motion/react";
+
+const Services = () => {
+  return (
+    <motion.div
+      initial={{ pacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      id="services"
+      className="w-full px-[12%] py-10 scroll-mt-20"
+    >
+      <motion.h4
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        className="text-center mb-2 text-lg font-Ovo"
+      >
+        What I offer
+      </motion.h4>
+      <motion.h2
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        className="text-center text-5xl font-Ovo"
+      >
+        My Services
+      </motion.h2>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.7, duration: 0.5 }}
+        className="text-center max-w-2xl mx-auto mt-5 mb-12 font-Ovo"
+      >
+        I specialize in creating responsive web applications with modern
+        technologies like React, Next.js, and Node.js, ensuring seamless user
+        experiences and robust backend solutions.
+      </motion.p>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.9, duration: 0.6 }}
+        className="grid grid-cols-4 gap-6 my-10"
+      >
+        {serviceData.map(({ icon, title, description, link }, index) => (
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            key={index}
+            className="border border-gray-400 rounded-lg px-8 py-12 
+            hover:shadow-black cursor-pointer hover:bg-lightHover 
+            hover:-translate-y-1 duration-500 dark:hover:bg-darkHover dark:hover:shadow-white"
+          >
+            <Image src={icon} alt="" className="w-10" />
+            <h3 className="text-lg my-4 text-gray-700 dark:text-white">
+              {title}
+            </h3>
+            <p className="=text-sm text-gray-600 leading-5 dark:text-white/80">
+              {description}
+            </p>
+            <a href={link} className="flex items-center gap-2 text-sm mt-5">
+              Read More
+              <Image alt="" src={assets.right_arrow} className="w-4" />
+            </a>
+          </motion.div>
+        ))}
+      </motion.div>
+    </motion.div>
+  );
+};
+
+export default Services;
+
+
+
+./app/components/Work.jsx
+import { assets, workData } from "@/public/assets/assets";
+import Image from "next/image";
+import React from "react";
+import { motion } from "motion/react";
+
+export default function Work({ DarkMode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      id="work"
+      className="w-full px-[12%] py-10 scroll-mt-20"
+    >
+      <motion.h4
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        className="text-center mb-2 text-lg font-Ovo"
+      >
+        My Portfolio
+      </motion.h4>
+      <motion.h2
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        className="text-center text-5xl font-Ovo"
+      >
+        My Latest Work
+      </motion.h2>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.7, duration: 0.5 }}
+        className="text-center max-w-2xl mx-auto mt-5 mb-12 font-Ovo"
+      >
+        Welcome to my porfolio! Explore a selection of my recent projects that
+        showcase my skills and expertise in software development. Each project
+        reflects my commitment to delivering high-quality solutions and
+        innovative designs.
+      </motion.p>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.9, duration: 0.6 }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-10 gap-5 dark:text-black"
+      >
+        {workData.map((project, index) => (
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+            key={index}
+            className="aspect-square bg-no-repeat bg-cover bg-center rounded-lg
+            relative cursor-pointer group"
+            style={{ backgroundImage: `url(${project.bgImage})` }}
+          >
+            <motion.div
+              className="bg-white w-10/12 rounded-md absolute bottom-5
+            left-1/2 -translate-x-1/2 py-3 px-5 flex items-center 
+            justify-between duration-500 group-hover:-translate-y-1 group-hover:shadow-lg"
+            >
+              <div>
+                <h2 className="font-semibold">{project.title}</h2>
+                <p className="text-sm text-gray-700">{project.description}</p>
+              </div>
+              <motion.div
+                className="border rounded-full w-9
+              aspect-square flex items-center justify-center shadow-[2px_2px_0_#000]
+              group-hover:bg-lime-300 transition"
+              >
+                <Image src={assets.send_icon} alt="send icon" className="w-5" />
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      <motion.a
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 1.1, duration: 0.5 }}
+        href=""
+        className="w-max flex items-center justify-center gap-2
+      text-gray-700 border-[0.5px] border-gray-700 rounded-full py-3 px-10 mx-auto 
+      my-20 hover:bg-lightHover duration-500 dark:text-white dark:border-white dark:hover:bg-darkHover"
+      >
+        Show more
+        <Image
+          src={
+            DarkMode ? assets.right_arrow_bold_dark : assets.right_arrow_bold
+          }
+          alt="Right arrow"
+          className="w-4"
+        />
+      </motion.a>
+    </motion.div>
+  );
+}
+
+
+
