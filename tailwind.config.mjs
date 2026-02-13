@@ -1,18 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        lightHover: "#fcf4ff",
-        darkHover: "#2a004a",
-        darkTheme: "#11001F",
+        "dark-theme": "#11001F",
+        "dark-hover": "#2a004a",
+        "light-hover": "#fcf4ff",
       },
+
       fontFamily: {
         Outfit: ["Outfit", "sans-serif"],
         Ovo: ["Ovo", "serif"],
@@ -26,6 +27,5 @@ export default {
       },
     },
   },
-  darkMode: "selector",
   plugins: [],
 };

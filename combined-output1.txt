@@ -1,20 +1,19 @@
 ./tailwind.config.mjs
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        "dark-theme": "#11001F",
-        "dark-hover": "#2a004a",
-        "light-hover": "#fcf4ff",
+        lightHover: "#fcf4ff",
+        darkHover: "#2a004a",
+        darkTheme: "#11001F",
       },
-
       fontFamily: {
         Outfit: ["Outfit", "sans-serif"],
         Ovo: ["Ovo", "serif"],
@@ -28,6 +27,7 @@ export default {
       },
     },
   },
+  darkMode: "selector",
   plugins: [],
 };
 
@@ -54,31 +54,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                const theme = localStorage.getItem('theme');
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('dark');
-                } else if (theme === 'light') {
-                  document.documentElement.classList.remove('dark');
-                }
-              })();
-            `,
-          }}
-        />
-      </head>
-
+    <html lang="en" className="scroll-smooth dark">
       <body
         className={`${outfit.className} ${ovo.className}
-        antialiased leading-8 overflow-x-hidden
-        dark:bg-darkTheme dark:text-white`}
+         antialiased leading-8 overflow-x-hidden dark:bg-darkTheme
+         dark:text-white`}
       >
         {children}
-      </body>
+      </body> 
     </html>
   );
 }
@@ -101,23 +84,14 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
-    // Check localStorage first
-    const storedTheme = localStorage.theme;
-    if (storedTheme === "dark") {
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
       setIsDarkMode(true);
-      document.documentElement.classList.add("dark");
-    } else if (storedTheme === "light") {
-      setIsDarkMode(false);
-      document.documentElement.classList.remove("dark");
     } else {
-      // Check system preference
-      const systemPrefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      setIsDarkMode(systemPrefersDark);
-      if (systemPrefersDark) {
-        document.documentElement.classList.add("dark");
-      }
+      setIsDarkMode(false);
     }
   }, []);
 
@@ -127,13 +101,13 @@ export default function Home() {
       localStorage.theme = "dark";
     } else {
       document.documentElement.classList.remove("dark");
-      localStorage.theme = "light";
+      localStorage.theme = "";
     }
   }, [isDarkMode]);
 
   return (
     <>
-      <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+      <Navbar isDarkMode={isDarkMode} />
       <Header isDarkMode={isDarkMode} />
       <About isDarkMode={isDarkMode} />
       <Services isDarkMode={isDarkMode} />
@@ -149,8 +123,29 @@ export default function Home() {
 ./app/globals.css
 @import "tailwindcss";
 
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
 body {
-  font-family: Outfit;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 
@@ -233,7 +228,7 @@ const About = ({ isDarkMode }) => {
               <motion.li
                 whileInView={{ scale: 1.05 }}
                 key={index}
-                className="border-[0.5px] border-gray-400 rounded-xl p-6 cursor-pointer hover:bg-light-hover-bg hover:-translate-y-1 duration-500 hover:shadow-black dark:border-white dark:hover:shadow-white dark:hover:bg-dark-hover-bg/50"
+                className="border-[0.5px] border-gray-400 rounded-xl p-6 cursor-pointer hover:bg-lightHover hover:-translate-y-1 duration-500 hover:shadow-black dark:border-white dark:hover:shadow-white dark:hover:bg-darkHover/50"
               >
                 <Image
                   src={isDarkMode ? iconDark : icon}
@@ -359,7 +354,8 @@ function Contact() {
             type="text"
             placeholder="Enter your name"
             required
-            className="flex-1 p-3 outline-none border-[0.5px] border-gray-400 rounded-md bg-white dark:bg-darkHover/30 dark:border-white/90"
+            className="flex-1 p-3 outline-none border-[0.5px] border-gray-400
+          rounded-md bg-white dark:bg-darkHover/30 dark:border-white/90"
             name="name"
           />
           <motion.input
@@ -369,7 +365,8 @@ function Contact() {
             type="email"
             placeholder="Enter your email"
             required
-            className="w-full p-4 outline-none border-[0.5px] border-gray-400 rounded-md bg-white dark:bg-darkHover/30 dark:border-white/90"
+            className="w-full p-4 outline-none border-[0.5px] border-gray-400 
+          rounded-md bg-white dark:bg-darkHover/30 dark:border-white/90"
             name="email"
           />
         </div>
@@ -380,14 +377,16 @@ function Contact() {
           rows="6"
           placeholder="Enter your message"
           required
-          className="w-full p-4 outline-none border-[0.5px] boder-gray-400 rounded-md bg-white mb-6 dark:bg-darkHover/30 dark:border-white/90"
+          className="w-full p-4 outline-none border-[0.5px] boder-gray-400
+        rounded-md bg-white mb-6 dark:bg-darkHover/30 dark:border-white/90"
           name="message"
         ></motion.textarea>
         <motion.button
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.3 }}
           type="submit"
-          className="py-3 px-8 w-max flex items-center justify-between gap-2 bg-black/80 text-white rounded-full mx-auto hover:bg-black duration-500 dark:bg-transparent dark:border-[0.5px] dark:hover:bg-dark-hover-bg"
+          className="py-3 px-8 w-max flex items-center justify-between gap-2 bg-black/80
+         text-white rounded-full mx-auto hover:bg-black duration-500 dark:bg-transparent dark:border-[0.5px] dark:hover:bg-darkHover"
         >
           Submit Now
           <Image src={assets.right_arrow_white} alt="" className="W-4" />
@@ -426,7 +425,10 @@ function Footer({ isDarkMode }) {
           joshuadeialorse@gmail.com
         </div>
       </div>
-      <div className="text-center sm:flex items-center justify-between border-t border-gray-400 mx-[10%] mt-12 py-6">
+      <div
+        className="text-center sm:flex items-center justify-between border-t 
+      border-gray-400 mx-[10%] mt-12 py-6"
+      >
         <p>© 2026 Joshua Dei-Alorse. All rights reserved.</p>
         <ul className="flex items-center gap-10 justify-center">
           <li>
@@ -545,7 +547,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
   const sideMenuRef = useRef();
 
   const openMenu = () => {
-    sideMenuRef.current.style.transform = "translateX(0 rem)";
+    sideMenuRef.current.style.transform = "translateX(-16rem)";
   };
 
   const closeMenu = () => {
@@ -567,11 +569,12 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
         <Image src={assets.header_bg_color} alt="" className="w-full" />
       </div>
       <nav
-        className={`w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 ${
-          isScrolled
-            ? "bg-white bg-opacity-50 backdrop-blur-lg shadow-sm dark:bg-darkTheme dark:shadow-white/20"
-            : ""
-        }`}
+        className={`w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex 
+          items-center justify-between z-50 ${
+            isScrolled
+              ? "bg-white bg-opacity-50 backdrop-blur-lg shadow-sm dark:bg-darkTheme dark:shadow-white/20"
+              : ""
+          }`}
       >
         <a href="#top" className="font-Ovo">
           <Image
@@ -582,11 +585,12 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
         </a>
 
         <ul
-          className={`hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 ${
-            isScrolled
-              ? ""
-              : "bg-white shadow-sm bg-opacity-50 dark:border dark:border-white/50 dark:bg-transparent"
-          }`}
+          className={`hidden md:flex items-center gap-6 lg:gap-8 
+            rounded-full px-12 py-3 ${
+              isScrolled
+                ? ""
+                : "bg-white shadow-sm bg-opacity-50 dark:border dark:border-white/50 dark:bg-transparent"
+            }`}
         >
           <li>
             <a href="#top" className="font-Ovo">
@@ -620,7 +624,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
             <Image
               alt=""
               src={isDarkMode ? assets.sun_icon : assets.moon_icon}
-              className="w-6"
+              className="w-6 "
             />
           </button>
           <a
@@ -639,7 +643,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
             <Image
               alt=""
               src={isDarkMode ? assets.menu_white : assets.menu_black}
-              className="w-6"
+              className="w-6 "
             />
           </button>
         </div>
@@ -648,7 +652,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
 
         <ul
           ref={sideMenuRef}
-          className="flex md:hidden flex-col gap-4 py-20 px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen bg-rose-50 transition duration-500 dark:bg-dark-hover-bg dark:text-white"
+          className="flex md:hidden flex-col gap-4 py-20  px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen bg-rose-50 transition duration-500 dark:bg-darkHover dark:text-white"
         >
           <div className="absolute top-6 right-6" onClick={closeMenu}>
             <Image
@@ -745,7 +749,9 @@ const Services = () => {
           <motion.div
             whileHover={{ scale: 1.05 }}
             key={index}
-            className="border border-gray-400 rounded-lg px-8 py-12 hover:shadow-black cursor-pointer hover:bg-light-hover-bg hover:-translate-y-1 duration-500 dark:hover:bg-dark-hover-bg dark:hover:shadow-white"
+            className="border border-gray-400 rounded-lg px-8 py-12 
+            hover:shadow-black cursor-pointer hover:bg-lightHover 
+            hover:-translate-y-1 duration-500 dark:hover:bg-darkHover dark:hover:shadow-white"
           >
             <Image src={icon} alt="" className="w-10" />
             <h3 className="text-lg my-4 text-gray-700 dark:text-white">
@@ -775,7 +781,7 @@ import Image from "next/image";
 import React from "react";
 import { motion } from "motion/react";
 
-export default function Work({ isDarkMode }) {
+export default function Work({ DarkMode }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -823,15 +829,24 @@ export default function Work({ isDarkMode }) {
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
             key={index}
-            className="aspect-square bg-no-repeat bg-cover bg-center rounded-lg relative cursor-pointer group"
+            className="aspect-square bg-no-repeat bg-cover bg-center rounded-lg
+            relative cursor-pointer group"
             style={{ backgroundImage: `url(${project.bgImage})` }}
           >
-            <motion.div className="bg-white w-10/12 rounded-md absolute bottom-5 left-1/2 -translate-x-1/2 py-3 px-5 flex items-center justify-between duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
+            <motion.div
+              className="bg-white w-10/12 rounded-md absolute bottom-5
+            left-1/2 -translate-x-1/2 py-3 px-5 flex items-center 
+            justify-between duration-500 group-hover:-translate-y-1 group-hover:shadow-lg"
+            >
               <div>
                 <h2 className="font-semibold">{project.title}</h2>
                 <p className="text-sm text-gray-700">{project.description}</p>
               </div>
-              <motion.div className="border rounded-full w-9 aspect-square flex items-center justify-center shadow-[2px_2px_0_#000] group-hover:bg-lime-300 transition">
+              <motion.div
+                className="border rounded-full w-9
+              aspect-square flex items-center justify-center shadow-[2px_2px_0_#000]
+              group-hover:bg-lime-300 transition"
+              >
                 <Image src={assets.send_icon} alt="send icon" className="w-5" />
               </motion.div>
             </motion.div>
@@ -844,12 +859,14 @@ export default function Work({ isDarkMode }) {
         whileInView={{ opacity: 1 }}
         transition={{ delay: 1.1, duration: 0.5 }}
         href=""
-        className="w-max flex items-center justify-center gap-2 text-gray-700 border-[0.5px] border-gray-700 rounded-full py-3 px-10 mx-auto my-20 hover:bg-light-hover-bg duration-500 dark:text-white dark:border-white dark:hover:bg-dark-hover-bg"
+        className="w-max flex items-center justify-center gap-2
+      text-gray-700 border-[0.5px] border-gray-700 rounded-full py-3 px-10 mx-auto 
+      my-20 hover:bg-lightHover duration-500 dark:text-white dark:border-white dark:hover:bg-darkHover"
       >
         Show more
         <Image
           src={
-            isDarkMode ? assets.right_arrow_bold_dark : assets.right_arrow_bold
+            DarkMode ? assets.right_arrow_bold_dark : assets.right_arrow_bold
           }
           alt="Right arrow"
           className="w-4"

@@ -21,10 +21,7 @@ function Footer({ isDarkMode }) {
           joshuadeialorse@gmail.com
         </div>
       </div>
-      <div
-        className="text-center sm:flex items-center justify-between border-t 
-      border-gray-400 mx-[10%] mt-12 py-6"
-      >
+      <div className="text-center sm:flex items-center justify-between border-t border-gray-400 mx-[10%] mt-12 py-6">
         <p>© 2026 Joshua Dei-Alorse. All rights reserved.</p>
         <ul className="flex items-center gap-10 justify-center">
           <li>

@@ -18,14 +18,31 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="scroll-smooth dark">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const theme = localStorage.getItem('theme');
+                if (theme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                } else if (theme === 'light') {
+                  document.documentElement.classList.remove('dark');
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
+
       <body
         className={`${outfit.className} ${ovo.className}
-         antialiased leading-8 overflow-x-hidden dark:bg-darkTheme
-         dark:text-white`}
+        antialiased leading-8 overflow-x-hidden
+        dark:bg-darkTheme dark:text-white`}
       >
         {children}
-      </body> 
+      </body>
     </html>
   );
 }

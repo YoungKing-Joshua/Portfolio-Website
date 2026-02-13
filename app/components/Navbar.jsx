@@ -7,7 +7,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
   const sideMenuRef = useRef();
 
   const openMenu = () => {
-    sideMenuRef.current.style.transform = "translateX(-16rem)";
+    sideMenuRef.current.style.transform = "translateX(0 rem)";
   };
 
   const closeMenu = () => {
@@ -29,12 +29,11 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
         <Image src={assets.header_bg_color} alt="" className="w-full" />
       </div>
       <nav
-        className={`w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex 
-          items-center justify-between z-50 ${
-            isScrolled
-              ? "bg-white bg-opacity-50 backdrop-blur-lg shadow-sm dark:bg-darkTheme dark:shadow-white/20"
-              : ""
-          }`}
+        className={`w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 ${
+          isScrolled
+            ? "bg-white bg-opacity-50 backdrop-blur-lg shadow-sm dark:bg-darkTheme dark:shadow-white/20"
+            : ""
+        }`}
       >
         <a href="#top" className="font-Ovo">
           <Image
@@ -45,12 +44,11 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
         </a>
 
         <ul
-          className={`hidden md:flex items-center gap-6 lg:gap-8 
-            rounded-full px-12 py-3 ${
-              isScrolled
-                ? ""
-                : "bg-white shadow-sm bg-opacity-50 dark:border dark:border-white/50 dark:bg-transparent"
-            }`}
+          className={`hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 ${
+            isScrolled
+              ? ""
+              : "bg-white shadow-sm bg-opacity-50 dark:border dark:border-white/50 dark:bg-transparent"
+          }`}
         >
           <li>
             <a href="#top" className="font-Ovo">
@@ -84,7 +82,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
             <Image
               alt=""
               src={isDarkMode ? assets.sun_icon : assets.moon_icon}
-              className="w-6 "
+              className="w-6"
             />
           </button>
           <a
@@ -103,7 +101,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
             <Image
               alt=""
               src={isDarkMode ? assets.menu_white : assets.menu_black}
-              className="w-6 "
+              className="w-6"
             />
           </button>
         </div>
@@ -112,7 +110,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
 
         <ul
           ref={sideMenuRef}
-          className="flex md:hidden flex-col gap-4 py-20  px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen bg-rose-50 transition duration-500 dark:bg-darkHover dark:text-white"
+          className="flex md:hidden flex-col gap-4 py-20 px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen bg-rose-50 transition duration-500 dark:bg-dark-hover-bg dark:text-white"
         >
           <div className="absolute top-6 right-6" onClick={closeMenu}>
             <Image

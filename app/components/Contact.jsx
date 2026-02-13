@@ -72,8 +72,7 @@ function Contact() {
             type="text"
             placeholder="Enter your name"
             required
-            className="flex-1 p-3 outline-none border-[0.5px] border-gray-400
-          rounded-md bg-white dark:bg-darkHover/30 dark:border-white/90"
+            className="flex-1 p-3 outline-none border-[0.5px] border-gray-400 rounded-md bg-white dark:bg-darkHover/30 dark:border-white/90"
             name="name"
           />
           <motion.input
@@ -83,8 +82,7 @@ function Contact() {
             type="email"
             placeholder="Enter your email"
             required
-            className="w-full p-4 outline-none border-[0.5px] border-gray-400 
-          rounded-md bg-white dark:bg-darkHover/30 dark:border-white/90"
+            className="w-full p-4 outline-none border-[0.5px] border-gray-400 rounded-md bg-white dark:bg-darkHover/30 dark:border-white/90"
             name="email"
           />
         </div>
@@ -95,16 +93,14 @@ function Contact() {
           rows="6"
           placeholder="Enter your message"
           required
-          className="w-full p-4 outline-none border-[0.5px] boder-gray-400
-        rounded-md bg-white mb-6 dark:bg-darkHover/30 dark:border-white/90"
+          className="w-full p-4 outline-none border-[0.5px] boder-gray-400 rounded-md bg-white mb-6 dark:bg-darkHover/30 dark:border-white/90"
           name="message"
         ></motion.textarea>
         <motion.button
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.3 }}
           type="submit"
-          className="py-3 px-8 w-max flex items-center justify-between gap-2 bg-black/80
-         text-white rounded-full mx-auto hover:bg-black duration-500 dark:bg-transparent dark:border-[0.5px] dark:hover:bg-darkHover"
+          className="py-3 px-8 w-max flex items-center justify-between gap-2 bg-black/80 text-white rounded-full mx-auto hover:bg-black duration-500 dark:bg-transparent dark:border-[0.5px] dark:hover:bg-dark-hover-bg"
         >
           Submit Now
           <Image src={assets.right_arrow_white} alt="" className="W-4" />
